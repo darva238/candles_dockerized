@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: candlesdb
+      POSTGRES_USER: candlesuser
+      POSTGRES_PASSWORD: candlespass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .
+    container_name: web-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/candlesdb
+      DB_USER: candlesuser
+      DB_PASSWORD: candlespass
+
+volumes:
+  pgdata:
