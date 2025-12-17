@@ -1,4 +1,4 @@
-package servlet.utils;
+package servlet;
 
 import jakarta.servlet.http.HttpServletRequest;
 
